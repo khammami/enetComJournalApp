@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Journal APP</string>
+    <string name="action_settings">Clear All Data</string>
+    <string name="journal_title_hint">Title</string>
+    <string name="journal_date_hint">Date</string>
+    <string name="journal_content_hint">Content</string>
+    <string name="clear_data_toast_text">Clear the data now!</string>
+    <string name="save_menu">Save</string>
+    <string name="unable_to_update">Unable to update the journal</string>
+    <string name="empty_not_saved">Journal not saved because it is empty.</string>
+    <string name="delete_word_preamble">Deleting </string>
+    <string name="datepicker">datePicker</string>
+    <string name="ok_button">Confirm</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="card_title_placeholder">Title</string>
+    <string name="card_date_placeholder">Date</string>
+    <string name="card_content_placeholder">Content</string>
+    <string name="select_date_btn">Select Date</string>
+    <string name="default_date_placeholder">Default Date</string>
+</resources>
