@@ -15,5 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/recyclerview_item"
-        android:paddingTop="8dp"/>
+        android:paddingTop="8dp"
+        android:clipToPadding="false"/>
 </LinearLayout>
