@@ -17,7 +17,7 @@ import java.util.List;
 public class JournalListAdapter extends RecyclerView.Adapter<JournalListAdapter.JournalViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Journal> mJournals; // Cached copy of words
+    private List<Journal> mJournals; // Cached copy of journals
     private static ClickListener clickListener;
 
     public JournalListAdapter(Context context) {

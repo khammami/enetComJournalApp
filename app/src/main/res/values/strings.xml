@@ -8,7 +8,7 @@
     <string name="save_menu">Save</string>
     <string name="unable_to_update">Unable to update the journal</string>
     <string name="empty_not_saved">Journal not saved because it is empty.</string>
-    <string name="delete_word_preamble">Deleting </string>
+    <string name="delete_journal_preamble">Deleting </string>
     <string name="datepicker">datePicker</string>
     <string name="ok_button">Confirm</string>
     <string name="cancel_button">Cancel</string>

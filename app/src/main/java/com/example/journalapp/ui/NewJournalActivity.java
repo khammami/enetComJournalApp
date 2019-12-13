@@ -97,13 +97,13 @@ public class NewJournalActivity extends AppCompatActivity {
             Intent replyIntent = new Intent();
             if (TextUtils.isEmpty(mEditTitleView.getText()) &&
             TextUtils.isEmpty(mEditContentView.getText())) {
-                // No word was entered, set the result accordingly.
+                // No journal was entered, set the result accordingly.
                 setResult(RESULT_CANCELED, replyIntent);
             } else {
-                // Get the new word that the user entered.
+                // Get the new journal that the user entered.
                 String title = mEditTitleView.getText().toString();
                 String content = mEditContentView.getText().toString();
-                // Put the new word in the extras for the reply Intent.
+                // Put the new journal in the extras for the reply Intent.
                 Log.d("title",title);
                 Log.d("content",content);
                 replyIntent.putExtra(EXTRA_REPLY_TITLE, title);

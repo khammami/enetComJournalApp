@@ -25,7 +25,7 @@ public interface JournalDao {
     void deleteJournal(Journal journal);
 
     @Query("SELECT * from journal_table LIMIT 1")
-    Journal[] getAnyWord();
+    Journal[] getAnyJournal();
 
     @Query("SELECT * from journal_table ORDER BY published_on DESC")
     LiveData<List<Journal>> getAllJournals();
