@@ -20,7 +20,7 @@ The JournalApp app does the following:
 
 <img width="200" src="./assets/f1f0dc44c201fbce.png"> <img width="200" src="./assets/a199ecb3b100bf8.png">
  
-**Journal**: Confirmation Alerts are optionals
+**Note**: Confirmation Alerts are optionals
 
 You must follow the diagram below for your database table
 
