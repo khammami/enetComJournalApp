@@ -28,6 +28,7 @@ You must follow the diagram below for your database table
 
 ## IMPORTANT
 in order to store complex data like Date in RoomDatabase you need to use converters:
+
 ```java
 public class Converters {
    @TypeConverter
@@ -43,6 +44,7 @@ public class Converters {
 ```
  
 then add the following annotation to your RoomDatabase class under @Database :
+
  ```java
 @Database(entities = ...)
 @TypeConverters({Converters.class})
