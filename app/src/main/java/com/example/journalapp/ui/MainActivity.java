@@ -3,13 +3,10 @@ package com.example.journalapp.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.journalapp.R;
-import com.example.journalapp.adapter.JournalListAdapter;
-import com.example.journalapp.db.Converters;
-import com.example.journalapp.model.Journal;
-import com.example.journalapp.viewmodel.JournalViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,12 +18,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import com.example.journalapp.R;
+import com.example.journalapp.adapter.JournalListAdapter;
+import com.example.journalapp.model.Journal;
+import com.example.journalapp.viewmodel.JournalViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_NOTE_ACTIVITY_REQUEST_CODE = 2;
 
-    public static final String EXTRA_DATA_UPDATE_TITLE = "extra_title_to_be_updated";
-    public static final String EXTRA_DATA_UPDATE_CONTENT = "extra_content_to_be_updated";
-    public static final String EXTRA_DATA_UPDATE_DATE = "extra_date_to_be_updated";
     public static final String EXTRA_DATA_ID = "extra_data_id";
 
     private JournalViewModel mJournalViewModel;
@@ -189,24 +183,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Journal journal = new Journal(data.getStringExtra(NewJournalActivity.EXTRA_REPLY_TITLE),
-                                    data.getStringExtra(NewJournalActivity.EXTRA_REPLY_CONTENT),
-                                    Converters.fromTimestamp(data.getLongExtra(NewJournalActivity.EXTRA_REPLY_DATE,0)));
-            // Save the data.
-            mJournalViewModel.insert(journal);
+            //TODO: toast for successful inset
         } else if (requestCode == UPDATE_NOTE_ACTIVITY_REQUEST_CODE
                 && resultCode == RESULT_OK) {
-            String title_data = data.getStringExtra(NewJournalActivity.EXTRA_REPLY_TITLE);
-            String content_data = data.getStringExtra(NewJournalActivity.EXTRA_REPLY_CONTENT);
-            Date date_data = Converters.fromTimestamp(data.getLongExtra(NewJournalActivity.EXTRA_REPLY_DATE,0));
-            int id = data.getIntExtra(NewJournalActivity.EXTRA_REPLY_ID, -1);
-
-            if (id != -1) {
-                mJournalViewModel.update(new Journal(id, title_data,content_data,date_data));
-            } else {
-                Toast.makeText(this, R.string.unable_to_update,
-                        Toast.LENGTH_LONG).show();
-            }
+            //TODO: Toast for successful update
         } else {
             Toast.makeText(
                     this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
@@ -215,9 +195,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchUpdateJournalActivity(Journal journal) {
         Intent intent = new Intent(this, NewJournalActivity.class);
-        intent.putExtra(EXTRA_DATA_UPDATE_TITLE, journal.getTitle());
-        intent.putExtra(EXTRA_DATA_UPDATE_CONTENT, journal.getContent());
-        intent.putExtra(EXTRA_DATA_UPDATE_DATE, Converters.dateToTimestamp(journal.getJournalDate()));
         intent.putExtra(EXTRA_DATA_ID, journal.getId());
         startActivityForResult(intent, UPDATE_NOTE_ACTIVITY_REQUEST_CODE);
     }

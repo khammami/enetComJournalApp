@@ -1,44 +1,37 @@
 package com.example.journalapp.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.journalapp.R;
-import com.example.journalapp.db.Converters;
+import com.example.journalapp.model.Journal;
+import com.example.journalapp.viewmodel.NewJournalViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import static com.example.journalapp.ui.MainActivity.EXTRA_DATA_ID;
-import static com.example.journalapp.ui.MainActivity.EXTRA_DATA_UPDATE_CONTENT;
-import static com.example.journalapp.ui.MainActivity.EXTRA_DATA_UPDATE_DATE;
-import static com.example.journalapp.ui.MainActivity.EXTRA_DATA_UPDATE_TITLE;
 
 public class NewJournalActivity extends AppCompatActivity {
-
-    public static final String EXTRA_REPLY_TITLE = "REPLY_TITLE";
-    public static final String EXTRA_REPLY_DATE = "REPLY_DATE";
-    public static final String EXTRA_REPLY_CONTENT = "REPLY_CONTENT";
-    public static final String EXTRA_REPLY_ID = "REPLY_ID";
 
     private EditText mEditTitleView;
     private EditText mEditContentView;
     private TextView mDateView;
 
-    private Date mJournalDate;
-    private Bundle extras;
-
     private int mId;
+    private Journal mJournal;
+    private NewJournalViewModel mNewJournalViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +42,38 @@ public class NewJournalActivity extends AppCompatActivity {
         mEditContentView = findViewById(R.id.journalDescEditView);
         mDateView = findViewById(R.id.dateTextView);
 
-        mJournalDate = Calendar.getInstance().getTime();
-        mDateView.setText(mJournalDate.toString());
 
         mId = -1 ;
 
-        extras = getIntent().getExtras();
+        mNewJournalViewModel = ViewModelProviders.of(this).get(NewJournalViewModel.class);
+
+        Bundle extras = getIntent().getExtras();
 
         // If we are passed content, fill it in for the user to edit.
         if (extras != null) {
-            String title = extras.getString(EXTRA_DATA_UPDATE_TITLE, "");
-            String content = extras.getString(EXTRA_DATA_UPDATE_CONTENT, "");
-            long date = extras.getLong(EXTRA_DATA_UPDATE_DATE, 0);
+            mId = extras.getInt(EXTRA_DATA_ID, -1);
+        }
 
-            if (!title.isEmpty()) {
-                mEditTitleView.setText(title);
-            }
+        if (mId == -1){
+            mJournal = new Journal();
+            mJournal.setJournalDate(Calendar.getInstance().getTime());
+            populateUI(mJournal);
+        }else {
+            mNewJournalViewModel.getJournalById(mId).observe(this, new Observer<Journal>() {
+                @Override
+                public void onChanged(Journal journal) {
+                    mJournal = journal;
+                    populateUI(journal);
+                }
+            });
+        }
+    }
 
-            if (!content.isEmpty()) {
-                mEditContentView.setText(content);
-            }
-
-            if (date != 0) {
-                mJournalDate = Converters.fromTimestamp(date);
-                mDateView.setText(mJournalDate.toString());
-            }
+    private void populateUI(Journal journal) {
+        if (journal != null){
+            mEditTitleView.setText(journal.getTitle());
+            mEditContentView.setText(journal.getContent());
+            mDateView.setText(journal.getJournalDate().toString());
         }
     }
 
@@ -96,23 +96,19 @@ public class NewJournalActivity extends AppCompatActivity {
             // Create a new Intent for the reply.
             Intent replyIntent = new Intent();
             if (TextUtils.isEmpty(mEditTitleView.getText()) &&
-            TextUtils.isEmpty(mEditContentView.getText())) {
+                    TextUtils.isEmpty(mEditContentView.getText())) {
                 // No journal was entered, set the result accordingly.
                 setResult(RESULT_CANCELED, replyIntent);
             } else {
                 // Get the new journal that the user entered.
-                String title = mEditTitleView.getText().toString();
-                String content = mEditContentView.getText().toString();
-                // Put the new journal in the extras for the reply Intent.
-                Log.d("title",title);
-                Log.d("content",content);
-                replyIntent.putExtra(EXTRA_REPLY_TITLE, title);
-                replyIntent.putExtra(EXTRA_REPLY_CONTENT, content);
-                replyIntent.putExtra(EXTRA_REPLY_DATE, Converters.dateToTimestamp(mJournalDate));
-                if (extras != null && extras.containsKey(EXTRA_DATA_ID)) {
-                    mId = extras.getInt(EXTRA_DATA_ID, -1);
+                mJournal.setTitle(mEditTitleView.getText().toString());
+                mJournal.setContent(mEditContentView.getText().toString());
+
+                if (mId == -1 ){
+                    mNewJournalViewModel.insert(mJournal);
+                }else {
+                    mNewJournalViewModel.update(mJournal);
                 }
-                replyIntent.putExtra(EXTRA_REPLY_ID, mId);
                 // Set the result status to indicate success.
                 setResult(RESULT_OK, replyIntent);
             }
@@ -130,7 +126,7 @@ public class NewJournalActivity extends AppCompatActivity {
     }
 
     public void setJournalDate(Date date){
-        mJournalDate = date;
-        mDateView.setText(mJournalDate.toString());
+        mJournal.setJournalDate(date);
+        mDateView.setText(date.toString());
     }
 }

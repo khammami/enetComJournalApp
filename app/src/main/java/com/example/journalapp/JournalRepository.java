@@ -43,6 +43,10 @@ public class JournalRepository {
         new deleteJournalAsyncTask(mJournalDao).execute(journal);
     }
 
+    public LiveData<Journal> getJournalById(int id) {
+        return mJournalDao.getJournalById(id);
+    }
+
     // Static inner classes below here to run database interactions in the background.
 
     /**

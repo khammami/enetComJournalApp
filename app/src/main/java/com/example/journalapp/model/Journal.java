@@ -24,6 +24,11 @@ public class Journal {
     @ColumnInfo(name = "published_on")
     private Date mJournalDate;
 
+    @Ignore
+    public Journal() {
+
+    }
+
     public Journal( String title, String content, @NonNull Date journalDate){
         this.mTitle = title;
         this.mContent = content;
