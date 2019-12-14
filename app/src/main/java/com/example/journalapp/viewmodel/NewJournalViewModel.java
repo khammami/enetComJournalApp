@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.journalapp.BasicApp;
 import com.example.journalapp.JournalRepository;
 import com.example.journalapp.model.Journal;
 
@@ -15,7 +16,7 @@ public class NewJournalViewModel extends AndroidViewModel {
 
     public NewJournalViewModel(@NonNull Application application) {
         super(application);
-        mRepository = new JournalRepository(application);
+        mRepository = ((BasicApp) application).getRepository();
     }
 
     public LiveData<Journal> getJournalById(int id) {

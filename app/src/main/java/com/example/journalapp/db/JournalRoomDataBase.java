@@ -17,7 +17,7 @@ public abstract class JournalRoomDataBase extends RoomDatabase {
 
     private static JournalRoomDataBase INSTANCE;
 
-    public static JournalRoomDataBase getDatabase(final Context context) {
+    public static JournalRoomDataBase getInstance(final Context context) {
         if (INSTANCE == null) {
             synchronized (JournalRoomDataBase.class) {
                 if (INSTANCE == null) {
